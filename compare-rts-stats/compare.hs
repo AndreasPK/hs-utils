@@ -20,7 +20,7 @@ data CompareResult = Result
 
 printResult :: CompareResult -> String
 printResult result =
-    name result ++ ":" ++ (showFFloat (Just 4) (relDiff result) "" ) ++ "(" ++ (show $ changed result) ++ "/" ++ (show $ baseline result) ++ ")"
+    size_name (name result) ++ ":" ++ (showFFloat (Just 4) (relDiff result) "" ) ++ "(" ++ (show $ changed result) ++ "/" ++ (show $ baseline result) ++ ")"
 
 readStats :: InputStats -> OutputStats
 readStats [] = mempty
@@ -34,6 +34,15 @@ compareMetric what v1 v2 =
 results :: OutputStats -> OutputStats -> [CompareResult]
 results base patch =
     M.elems $ intersectionWithKey compareMetric base patch
+
+size_name :: String -> String
+size_name s
+    | len < 28
+    = replicate (28-len) ' ' ++ s
+    | otherwise
+    = P.take 28 s
+  where
+    len = length s
 
 main = do
     (base:patch:_) <- getArgs
