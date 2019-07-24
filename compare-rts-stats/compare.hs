@@ -3,6 +3,7 @@ module Main where
 import Prelude as P
 import Data.Map.Strict as M
 import System.Environment
+import Numeric
 
 type InputStats = [(String,String)]
 type OutputStats = Map String Double
@@ -19,11 +20,11 @@ data CompareResult = Result
 
 printResult :: CompareResult -> String
 printResult result =
-    name result ++ ":" ++ (show $ relDiff result) ++ "(" ++ (show $ changed result) ++ "/" ++ (show $ baseline result) ++ ")"
+    name result ++ ":" ++ (showFFloat (Just 4) (relDiff result) "" ) ++ "(" ++ (show $ changed result) ++ "/" ++ (show $ baseline result) ++ ")"
 
 readStats :: InputStats -> OutputStats
 readStats [] = mempty
-readStats ((what,number):todo) = 
+readStats ((what,number):todo) =
     insert what (read number) $ readStats todo
 
 compareMetric :: String -> Double -> Double -> CompareResult
