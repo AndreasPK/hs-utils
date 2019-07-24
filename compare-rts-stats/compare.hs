@@ -29,7 +29,7 @@ readStats ((what,number):todo) =
 
 compareMetric :: String -> Double -> Double -> CompareResult
 compareMetric what v1 v2 =
-    Result what v1 v2 (v2 - v1) ((v2 - v1)/v1)
+    Result what v1 v2 (v2 - v1) (v2/v1)
 
 results :: OutputStats -> OutputStats -> [CompareResult]
 results base patch =
